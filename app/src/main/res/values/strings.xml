@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">PM2E17167</string>
+    <string name="salvar">Salvar contacto</string>
+    <string name="salvados">Contactos Salvados</string>
 </resources>
