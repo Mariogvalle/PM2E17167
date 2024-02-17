@@ -26,5 +26,5 @@ public class Contactos {
     public static final String DropTableContactos = "DROP TABLE IF EXISTS "+ TableContactos;
 
     //DML
-    public static final String SelectAllPersonas = "SELECT * FROM " + TableContactos;
+    public static final String SelectAllContactos = "SELECT * FROM " + TableContactos;
 }

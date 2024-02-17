@@ -1,15 +1,20 @@
 package com.examen.pm2e17167;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ContentValues;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.media.Image;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -24,6 +29,7 @@ import Modelos.Contacto;
 public class MainActivity extends AppCompatActivity {
     EditText nombre, telefono, nota;
     Button salvar, salvados;
+    ImageButton cargafotos;
     Spinner comboPais;
 
     String id;
@@ -38,11 +44,16 @@ public class MainActivity extends AppCompatActivity {
         nota = (EditText) findViewById(R.id.txtNota);
         imagenView3 = (ImageView) findViewById(R.id.imageView3);
         salvar = (Button) findViewById(R.id.btnSalvar);
+        salvados = (Button) findViewById(R.id.btnSalvados);
+        cargafotos = (ImageButton) findViewById(R.id.botonFotos);
 
-        String[] paises = {"Honduras","Nicaragua"};
+
+
+        String[] paises = {"Honduras","Nicaragua","Costa Rica"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String> (this, android.R.layout.simple_spinner_dropdown_item,paises);
         comboPais.setAdapter(adapter);
 
+        // Opciones de carga de fotografia
         salvar.setVisibility(View.VISIBLE);
 
 
@@ -81,6 +92,49 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
+        salvados.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), ActivityList.class);
+                startActivity(intent);
+            }
+        });
+
+        cargafotos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DialogoFotos();
+            }
+        });
+
+    }
+
+    private void DialogoFotos() {
+        final CharSequence[] opciones = {"Tomar foto","Elegir de galeria","Cancelar"};
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
+        final int COD_SELECCIONA =10;
+        builder.setTitle("Elige una opción");
+        builder.setItems(opciones, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if (opciones[i].equals("Tomar foto")){
+                    //metodo para tomar foto
+                }
+                else {
+                    if (opciones[i].equals("Elegir de galeria")){
+                        Intent intent = new Intent(Intent.ACTION_GET_CONTENT,
+                                MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        intent.setType("image/");
+                        int COD_SELECCIONA = 0;
+                        startActivityForResult(intent.createChooser(intent,"Seleccione"),COD_SELECCIONA);
+                    }
+                    else {
+                        dialogInterface.dismiss();
+                    }
+                }
+            }
+        });
+        builder.show();
     }
 
     private void salvarData() {
