@@ -7,4 +7,6 @@
     <string name="verimagen">Ver imágen</string>
     <string name="eliminar">Eliminar contacto</string>
     <string name="actualizar">Actualizar contacto</string>
+    <string name="agregarfoto">Agregar foto</string>
+    <string name="actualiza">Actulización de datos</string>
 </resources>

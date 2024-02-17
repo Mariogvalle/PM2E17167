@@ -1,12 +1,14 @@
 package Modelos;
 
+import java.sql.Blob;
+
 public class Personas {
     private Integer id;
     private String pais;
     private String nombres;
     private String telefono;
     private String nota;
-    private String imagen;
+    private byte[] imagen;
 
     public Personas() {
     }
@@ -51,15 +53,15 @@ public class Personas {
         this.nota = nota;
     }
 
-    public String getImagen() {
+    public byte[] getImagen() {
         return imagen;
     }
 
-    public void setImagen(String imagen) {
+    public void setImagen(byte[] imagen) {
         this.imagen = imagen;
     }
 
-    public Personas(Integer id, String pais, String nombres, String telefono, String nota, String imagen) {
+    public Personas(Integer id, String pais, String nombres, String telefono, String nota, byte[] imagen) {
         this.id = id;
         this.pais = pais;
         this.nombres = nombres;

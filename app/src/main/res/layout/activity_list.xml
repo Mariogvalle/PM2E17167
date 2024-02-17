@@ -35,8 +35,10 @@
         android:id="@+id/listpersonas"
         android:layout_width="409dp"
         android:layout_height="453dp"
+        android:layout_marginStart="15dp"
         android:layout_marginTop="15dp"
-        android:layout_marginEnd="2dp"
+        android:layout_marginEnd="15dp"
+        android:textFilterEnabled="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/busqueda" />
@@ -45,9 +47,11 @@
         android:id="@+id/btnCompartir"
         android:layout_width="174dp"
         android:layout_height="43dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
         android:text="@string/compartir"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/listpersonas" />
 
@@ -55,29 +59,35 @@
         android:id="@+id/btnImagen"
         android:layout_width="174dp"
         android:layout_height="43dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="15dp"
         android:text="@string/verimagen"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btnCompartir"
         app:layout_constraintTop_toBottomOf="@+id/listpersonas" />
 
     <Button
         android:id="@+id/btnEliminar"
         android:layout_width="174dp"
         android:layout_height="43dp"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="15dp"
         android:layout_marginBottom="20dp"
         android:text="@string/eliminar"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnCompartir" />
 
     <Button
         android:id="@+id/btnActualizar"
         android:layout_width="174dp"
         android:layout_height="43dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="15dp"
         android:layout_marginBottom="20dp"
         android:text="@string/actualizar"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btnEliminar"
+        app:layout_constraintTop_toBottomOf="@+id/btnImagen" />
 </androidx.constraintlayout.widget.ConstraintLayout>

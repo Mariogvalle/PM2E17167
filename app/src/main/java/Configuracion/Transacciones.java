@@ -20,7 +20,7 @@ public class Transacciones {
     // DDL Create
     public static final String CreateTablePersonas = "Create table "+ TablePersonas +"("+
             "id INTEGER PRIMARY KEY AUTOINCREMENT, pais TEXT, nombres TEXT, telefono TEXT, nota TEXT, "+
-            "imagen TEXT )";
+            "imagen BLOB )";
 
     //DDL Drop
     public static final String DropTablePersonas = "DROP TABLE IF EXISTS "+ TablePersonas;

@@ -1,12 +1,19 @@
 package com.examen.pm2e17167;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
@@ -18,18 +25,27 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
+
 import Configuracion.SQLiteConexion;
 import Configuracion.Transacciones;
-import Modelos.Personas;
+
 
 public class MainActivity extends AppCompatActivity {
     EditText nombre, telefono, nota;
-    Button salvar, salvados;
-    ImageButton cargafotos;
+    Button salvar, salvados, actualiza;
+    Button cargafotos;
     Spinner comboPais;
 
     String id;
     ImageView imagenView3;
+
+    static final int REQUEST_VIDEO_CAPTURE = 1;
+    static final int REQUEST_IMAGE_CAPTURE = 100;
+
+    static final int peticion_camara = 100;
+    static final int peticion_foto = 102;
+    private byte[] photoByteArray;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,9 +57,8 @@ public class MainActivity extends AppCompatActivity {
         imagenView3 = (ImageView) findViewById(R.id.imageView3);
         salvar = (Button) findViewById(R.id.btnSalvar);
         salvados = (Button) findViewById(R.id.btnSalvados);
-        cargafotos = (ImageButton) findViewById(R.id.botonFotos);
-
-
+        cargafotos = (Button) findViewById(R.id.btnFoto);
+        actualiza = (Button) findViewById(R.id.btnActualiza);
 
         String[] paises = {"Honduras","Nicaragua","Costa Rica"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String> (this, android.R.layout.simple_spinner_dropdown_item,paises);
@@ -51,28 +66,31 @@ public class MainActivity extends AppCompatActivity {
 
         // Opciones de carga de fotografia
         salvar.setVisibility(View.VISIBLE);
+        actualiza.setVisibility(View.INVISIBLE);
 
+        String id = getIntent().getStringExtra("id");
+        String nombre = getIntent().getStringExtra("nombres");
+        String telefono = getIntent().getStringExtra("telefono");
+        String nota = getIntent().getStringExtra("nota");
 
-//        String id = getIntent().getStringExtra("id");
-//        String nombre = getIntent().getStringExtra("nombres");
-//        String apellido = getIntent().getStringExtra("apellidos");
-//        String edad2 = getIntent().getStringExtra("edad");
-//        String correo2 = getIntent().getStringExtra("correo");
-//        String direccion2 = getIntent().getStringExtra("direccion");
+        if (nombre != null) {
 
+            salvar.setVisibility(View.INVISIBLE);
+            actualiza.setVisibility(View.VISIBLE);
+        }
 
-//        if (nombre != null) {
-//            // Aquí puedes hacer lo que necesites con la información extra recibida
-//            // Por ejemplo, puedes mostrarla en un TextView
-//            nombres.setText(nombre);
-//            apellidos.setText(apellido);
-//            edad.setText(edad2);
-//            correo.setText(correo2);
-//            direccion.setText(direccion2);
-//            salvar.setVisibility(View.INVISIBLE);
-//            eliminar.setVisibility(View.VISIBLE);
-//            actualizar.setVisibility(View.VISIBLE);
-//        }
+        actualiza.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    actualizaUpdate();
+            }
+        });
+        cargafotos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                permisoFoto();
+            }
+        });
 
         salvar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,7 +103,6 @@ public class MainActivity extends AppCompatActivity {
                             Toast.LENGTH_LONG).show();
                 }
                 }
-
         });
 
         salvados.setOnClickListener(new View.OnClickListener() {
@@ -95,34 +112,29 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-        cargafotos.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DialogoFotos();
-            }
-        });
-
     }
+
+    private void actualizaUpdate() {
+    }
+
 
     private void DialogoFotos() {
         final CharSequence[] opciones = {"Tomar foto","Elegir de galeria","Cancelar"};
         final AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
-        final int COD_SELECCIONA =10;
         builder.setTitle("Elige una opción");
         builder.setItems(opciones, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 if (opciones[i].equals("Tomar foto")){
-                    //metodo para tomar foto
+                    permisoFoto();
                 }
                 else {
                     if (opciones[i].equals("Elegir de galeria")){
                         Intent intent = new Intent(Intent.ACTION_GET_CONTENT,
                                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                         intent.setType("image/");
-                        int COD_SELECCIONA = 0;
-                        startActivityForResult(intent.createChooser(intent,"Seleccione"),COD_SELECCIONA);
+                        int COD_SELECCION = 10;
+                        startActivityForResult(intent.createChooser(intent,"Seleccione"),COD_SELECCION);
                     }
                     else {
                         dialogInterface.dismiss();
@@ -137,14 +149,71 @@ public class MainActivity extends AppCompatActivity {
         SQLiteConexion conexion = new SQLiteConexion(this, Transacciones.DBName, null, 1);
         SQLiteDatabase db = conexion.getWritableDatabase();
         ContentValues datos = new ContentValues();
-        datos.put(Transacciones.nombres, nombre.getText().toString());
-        datos.put(Transacciones.pais, comboPais.getSelectedItem().toString());
+        datos.put(Transacciones.pais, nombre.getText().toString());
+        datos.put(Transacciones.nombres, comboPais.getSelectedItem().toString());
         datos.put(Transacciones.telefono, telefono.getText().toString());
         datos.put(Transacciones.nota, nota.getText().toString());
+        datos.put(Transacciones.imagen,photoByteArray);
 
         Long resultado = db.insert(Transacciones.TablePersonas, Transacciones.id, datos);
 
         Toast.makeText(getApplicationContext(), "Persona ingresada correctamente " + resultado.toString(),
                 Toast.LENGTH_LONG).show();
     }
+
+    public void TomarFoto(){
+        Intent takeImageIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if ( takeImageIntent.resolveActivity(getPackageManager()) != null){
+            startActivityForResult(takeImageIntent, REQUEST_IMAGE_CAPTURE);
+       }
+    }
+
+    //para uso de camaras
+    private void permisoFoto() {
+        if(ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.CAMERA},
+                    peticion_camara);
+        }
+        else {
+            tomarFoto();
+        }
+    }
+
+    private void tomarFoto() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (intent.resolveActivity(getPackageManager()) != null){
+            startActivityForResult(intent,peticion_foto);
+
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == peticion_camara){
+            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                tomarFoto();
+            }
+            else{
+                Toast.makeText(getApplicationContext(),"Permiso denegado", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == peticion_foto && resultCode == RESULT_OK){
+            Bundle extras = data.getExtras();
+            Bitmap imagen = (Bitmap) extras.get("data");
+            imagenView3.setImageBitmap(imagen);
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            imagen.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            photoByteArray = stream.toByteArray();
+
+        }
+    }
+
 }
