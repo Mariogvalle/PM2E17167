@@ -1,11 +1,11 @@
 package Configuracion;
 
-public class Contactos {
+public class Transacciones {
     //Nombre de la base de datos
-    public static final String DBName = "PMEXAMNE";
+    public static final String DBName = "PMEXAMEN";
 
     //Creación de las tablas de las bases de datos.
-    public static final String TableContactos = "contactos";
+    public static final String TablePersonas = "personas";
 
     //Creacion de los campos de base de datos
 
@@ -18,13 +18,13 @@ public class Contactos {
 
 
     // DDL Create
-    public static final String CreateTableContactos = "Create table "+ TableContactos +"("+
+    public static final String CreateTablePersonas = "Create table "+ TablePersonas +"("+
             "id INTEGER PRIMARY KEY AUTOINCREMENT, pais TEXT, nombres TEXT, telefono TEXT, nota TEXT, "+
             "imagen TEXT )";
 
     //DDL Drop
-    public static final String DropTableContactos = "DROP TABLE IF EXISTS "+ TableContactos;
+    public static final String DropTablePersonas = "DROP TABLE IF EXISTS "+ TablePersonas;
 
     //DML
-    public static final String SelectAllContactos = "SELECT * FROM " + TableContactos;
+    public static final String SelectAllPersonas = "SELECT * FROM " + TablePersonas;
 }

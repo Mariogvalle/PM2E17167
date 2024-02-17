@@ -7,7 +7,6 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
-import android.media.Image;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
@@ -16,15 +15,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-
-import Configuracion.Contactos;
 import Configuracion.SQLiteConexion;
-import Modelos.Contacto;
+import Configuracion.Transacciones;
+import Modelos.Personas;
 
 public class MainActivity extends AppCompatActivity {
     EditText nombre, telefono, nota;
@@ -138,15 +134,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void salvarData() {
-        SQLiteConexion conexion = new SQLiteConexion(this, Contactos.DBName, null, 1);
+        SQLiteConexion conexion = new SQLiteConexion(this, Transacciones.DBName, null, 1);
         SQLiteDatabase db = conexion.getWritableDatabase();
         ContentValues datos = new ContentValues();
-        datos.put(Contactos.nombres, nombre.getText().toString());
-        datos.put(Contactos.pais, comboPais.getSelectedItem().toString());
-        datos.put(Contactos.telefono, telefono.getText().toString());
-        datos.put(Contactos.nota, nota.getText().toString());
+        datos.put(Transacciones.nombres, nombre.getText().toString());
+        datos.put(Transacciones.pais, comboPais.getSelectedItem().toString());
+        datos.put(Transacciones.telefono, telefono.getText().toString());
+        datos.put(Transacciones.nota, nota.getText().toString());
 
-        Long resultado = db.insert(Contactos.TableContactos, Contactos.id, datos);
+        Long resultado = db.insert(Transacciones.TablePersonas, Transacciones.id, datos);
 
         Toast.makeText(getApplicationContext(), "Persona ingresada correctamente " + resultado.toString(),
                 Toast.LENGTH_LONG).show();

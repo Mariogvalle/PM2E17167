@@ -1,6 +1,6 @@
 package Modelos;
 
-public class Contacto {
+public class Personas {
     private Integer id;
     private String pais;
     private String nombres;
@@ -8,7 +8,7 @@ public class Contacto {
     private String nota;
     private String imagen;
 
-    public Contacto() {
+    public Personas() {
     }
 
     public Integer getId() {
@@ -59,7 +59,7 @@ public class Contacto {
         this.imagen = imagen;
     }
 
-    public Contacto(Integer id, String pais, String nombres, String telefono, String nota, String imagen) {
+    public Personas(Integer id, String pais, String nombres, String telefono, String nota, String imagen) {
         this.id = id;
         this.pais = pais;
         this.nombres = nombres;

@@ -24,7 +24,7 @@
         android:layout_height="48dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/listcontactos"
+        app:layout_constraintBottom_toTopOf="@+id/listpersonas"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -32,7 +32,7 @@
         app:layout_constraintVertical_bias="0.424" />
 
     <ListView
-        android:id="@+id/listcontactos"
+        android:id="@+id/listpersonas"
         android:layout_width="409dp"
         android:layout_height="453dp"
         android:layout_marginTop="15dp"
@@ -49,7 +49,7 @@
         android:layout_marginTop="20dp"
         android:text="@string/compartir"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/listcontactos" />
+        app:layout_constraintTop_toBottomOf="@+id/listpersonas" />
 
     <Button
         android:id="@+id/btnImagen"
@@ -59,7 +59,7 @@
         android:layout_marginEnd="20dp"
         android:text="@string/verimagen"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/listcontactos" />
+        app:layout_constraintTop_toBottomOf="@+id/listpersonas" />
 
     <Button
         android:id="@+id/btnEliminar"
