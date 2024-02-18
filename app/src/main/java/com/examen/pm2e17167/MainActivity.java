@@ -1,5 +1,7 @@
 package com.examen.pm2e17167;
 
+import static Configuracion.Transacciones.nombres;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -68,13 +70,15 @@ public class MainActivity extends AppCompatActivity {
         salvar.setVisibility(View.VISIBLE);
         actualiza.setVisibility(View.INVISIBLE);
 
-        String id = getIntent().getStringExtra("id");
-        String nombre = getIntent().getStringExtra("nombres");
-        String telefono = getIntent().getStringExtra("telefono");
-        String nota = getIntent().getStringExtra("nota");
+        String idp = getIntent().getStringExtra("id");
+        String nombrep = getIntent().getStringExtra("nombres");
+        String telefonop = getIntent().getStringExtra("telefono");
+        String notap = getIntent().getStringExtra("nota");
 
-        if (nombre != null) {
-
+        if (nombrep != null) {
+            nombre.setText(nombrep);
+            telefono.setText(telefonop);
+            nota.setText(notap);
             salvar.setVisibility(View.INVISIBLE);
             actualiza.setVisibility(View.VISIBLE);
         }
@@ -149,8 +153,8 @@ public class MainActivity extends AppCompatActivity {
         SQLiteConexion conexion = new SQLiteConexion(this, Transacciones.DBName, null, 1);
         SQLiteDatabase db = conexion.getWritableDatabase();
         ContentValues datos = new ContentValues();
-        datos.put(Transacciones.pais, nombre.getText().toString());
-        datos.put(Transacciones.nombres, comboPais.getSelectedItem().toString());
+        datos.put(Transacciones.pais, comboPais.getSelectedItem().toString());
+        datos.put(Transacciones.nombres, nombre.getText().toString());
         datos.put(Transacciones.telefono, telefono.getText().toString());
         datos.put(Transacciones.nota, nota.getText().toString());
         datos.put(Transacciones.imagen,photoByteArray);

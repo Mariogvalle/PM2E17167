@@ -130,7 +130,7 @@
         android:id="@+id/btnSalvados"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="15dp"
         android:text="@string/salvados"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -174,11 +174,11 @@
 
     <Button
         android:id="@+id/btnActualiza"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/actualiza"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnSalvados" />
+        tools:layout_editor_absoluteY="648dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -20,6 +20,7 @@ import android.widget.SearchView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import Configuracion.SQLiteConexion;
 import Configuracion.Transacciones;
@@ -32,7 +33,7 @@ public class ActivityList extends AppCompatActivity {
     ArrayList<String> Arreglo;
 
 
-    Button eliminar, actualizar, agregar;
+    Button eliminar, actualizar, agregar, compartir, verimagen;
     EditText nombre;
     String id, idPersona, idTelefono;
 
@@ -55,6 +56,9 @@ public class ActivityList extends AppCompatActivity {
         actualizar = (Button) findViewById(R.id.btnActualizar);
         agregar = (Button) findViewById(R.id.btnAtras);
         busqueda = (SearchView) findViewById(R.id.busqueda);
+        compartir = (Button) findViewById(R.id.btnCompartir);
+        verimagen = (Button) findViewById(R.id.btnImagen);
+
 
         obtenerDatos();
 
@@ -80,6 +84,19 @@ public class ActivityList extends AppCompatActivity {
             public boolean onQueryTextChange(String newText) {
                 busquedaLista(newText);
                 return true;
+            }
+        });
+
+        verimagen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                paraverimagen(idposition);
+            }
+        });
+        compartir.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                paracompartir(idposition);
             }
         });
         //
@@ -125,42 +142,36 @@ public class ActivityList extends AppCompatActivity {
             }
         });
 
-        // Manejo del clic en el ListView
-//        listpersonasx.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // Obtener la persona seleccionada
-//                Personas personaSeleccionada = lista.get(position);
-//                idPersona=personaSeleccionada.getId().toString();
-                //eliminarPersona(personaSeleccionada.getId().toString());
-
-                // Aquí puedes definir la información que deseas pasar
-                //String informacionExtra = "Información adicional: " + personaSeleccionada.getNombres();
-
-                // Crear un Intent para abrir una nueva actividad
-                ///Intent intent = new Intent(ActivityList.this, MainActivity.class);
-
-                // Pasar la información a través del Intent
-                ///intent.putExtra("id", personaSeleccionada.getId().toString());
-                ///intent.putExtra("nombres", personaSeleccionada.getNombres());
-                ///intent.putExtra("apellidos", personaSeleccionada.getApellidos());
-                ///intent.putExtra("edad", personaSeleccionada.getEdad().toString());
-                ///intent.putExtra("correo", personaSeleccionada.getCorreo());
-                ///intent.putExtra("direccion", personaSeleccionada.getDireccion());
-
-                // Iniciar la nueva actividad
-                //startActivity(intent);
-                //finish();
-  //          }
-  //      });
    }
+
+    private void paraverimagen(Integer idposition) {
+        Personas personaSeleccionada = lista.get(idposition);
+        String imagenp= Arrays.toString(personaSeleccionada.getImagen());
+        //para compartir
+
+    }
+
+    private void paracompartir(Integer idposition) {
+        Personas personaSeleccionada = lista.get(idposition);
+        String nombrep=personaSeleccionada.getNombres().toString();
+        String telefonop=personaSeleccionada.getTelefono().toString();
+
+        //para compartir
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, nombrep + "\n" + telefonop +"\n");
+        sendIntent.setType("text/plain");
+
+        Intent shareIntent = Intent.createChooser(sendIntent, null);
+        startActivity(shareIntent);
+    }
 
     private void actualizarDatos() {
         // Obtener la persona seleccionada
         Personas personaSeleccionada = lista.get(idposition);
 
         // Aquí puedes definir la información que deseas pasar
-        //String informacionExtra = "Información adicional: " + personaSeleccionada.getNombres();
+        String informacionExtra = "Información adicional: " + personaSeleccionada.getNombres();
 
         // Crear un Intent para abrir una nueva actividad
         Intent intent = new Intent(ActivityList.this, MainActivity.class);
